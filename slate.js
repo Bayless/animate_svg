@@ -1,55 +1,31 @@
-var c = document.getElementById("slate");
+var esvg = document.getElementById("vimage");
 var circle = document.getElementById("circle");
 var dvd = document.getElementById("dvd");
 var stop = document.getElementById("stop");
-var ctx = c.getContext("2d");
-var img =new Image() //creates a variable for a new image
-img.src = "dvd.png" // specifies the location of the image
 
-
-
-
-
-ctx.fillStyle = "#00f0fa";
-
-function rect(event) {
-    var x = event.offsetX;     // Get the horizontal coordinate
-    var y = event.offsetY;     // Get the vertical coordinate
-    ctx.fillRect(x,y,Math.random()*100,Math.random()*100);
-}
-
-function clear(event) {
-    ctx.clearRect(0, 0, 800, 800); //clear entire canvas field
-    ctx.closePath();
-    ctx.beginPath();
-}
-
-function circle(event) {
-    var x = event.offsetX;     // Get the horizontal coordinate
-    var y = event.offsetY;     // Get the vertical coordinate
-    ctx.lineTo(x,y);
-    ctx.moveTo(x+10,y);
-    ctx.arc(x,y,10,0,2*Math.PI);
-    ctx.moveTo(x,y);
-    ctx.fill();
-    ctx.stroke();
+function erase(event) {
+    while (esvg.lastChild) {
+	esvg.removeChild(esvg.lastChild);
+    }
 }
 var rid = 0;
-//var x = 0;
-//var y = 0;
-
 var circleGrowth = function(){
     var x = 400;
     var y = 400;
     var radius = 1;
+    var c = document.createElementNS("http://www.w3.org/2000/svg","circle");
     window.cancelAnimationFrame(rid);
     var shrink = function(){
 	window.cancelAnimationFrame(rid);
-	ctx.clearRect(0, 0, 800, 800);   
-	ctx.beginPath();
-	ctx.arc(x,y,radius,0,2*Math.PI);
-	ctx.fill();
+	while (esvg.lastChild) {
+	    esvg.removeChild(esvg.lastChild);
+	}
+	c.setAttribute("cx",400);
+	c.setAttribute("cy",400);
+	c.setAttribute("r",radius.toString());
+	c.setAttribute("fill","#00f0fa");
 	radius--;
+	esvg.appendChild(c);
 	if (radius>0){
 	    rid = window.requestAnimationFrame(shrink);
 	    //console.log(radius);
@@ -61,11 +37,15 @@ var circleGrowth = function(){
     };
     var grow = function(){
 	window.cancelAnimationFrame(rid);
-	ctx.clearRect(0, 0, 800, 800);   
-	ctx.beginPath();
+	while (esvg.lastChild) {
+	    esvg.removeChild(esvg.lastChild);
+	}
+	c.setAttribute("cx",400);
+	c.setAttribute("cy",400);
+	c.setAttribute("r",radius.toString());
+	c.setAttribute("fill","#00f0fa");
 	radius++;
-	ctx.arc(x,y,radius,0,2*Math.PI);
-	ctx.fill();
+	esvg.appendChild(c);
 	if (radius<400){
 	    rid = window.requestAnimationFrame(grow);
 	}
@@ -82,18 +62,24 @@ var circleGrowth = function(){
     };
 
 };
-
+//var svgimg = document.createElementNS("http://www.w3.org/2000/svg", "image");
+  //      svgimg.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "myimage.jpg");
 var bounce = function(){
     var x = Math.random() * 710;
     var y = Math.random() * 710;
-    var dx = 2;
-    var dy = 2;
-   // window.cancelAnimationFrame(rid);
+    var dx = 1;
+    var dy = 1;
+    var im = document.createElementNS("http://www.w3.org/2000/svg","image");
+    im.setAttributeNS("http://www.w3.org/2000/svg",'xlink:href', "dvd.png")
+    im.setAttribute("height",10);
+    im.setAttribute("width",10);
     var boing = function(){
 	window.cancelAnimationFrame(rid);
-	ctx.clearRect(0, 0, 800, 800);   
-	ctx.drawImage(img,x,y,100,100);
-	ctx.beginPath();
+	while (esvg.lastChild) {
+	    esvg.removeChild(esvg.lastChild);
+	}
+	im.setAttribute("x",x.toString());
+	im.setAttribute("y",y.toString());
 	if (x<=0 || x>=710){
 	    dx*=-1;
 	}
