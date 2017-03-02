@@ -67,27 +67,28 @@ var circleGrowth = function(){
 var bounce = function(){
     var x = Math.random() * 710;
     var y = Math.random() * 710;
-    var dx = 1;
-    var dy = 1;
-    var im = document.createElementNS("http://www.w3.org/2000/svg","image");
-    im.setAttributeNS("http://www.w3.org/2000/svg",'xlink:href', "dvd.png")
-    im.setAttribute("height",10);
-    im.setAttribute("width",10);
+    var dx = 3;
+    var dy = 3;
     var boing = function(){
 	window.cancelAnimationFrame(rid);
 	while (esvg.lastChild) {
 	    esvg.removeChild(esvg.lastChild);
 	}
+	var im = document.createElementNS("http://www.w3.org/2000/svg","image");
+	im.setAttribute("href", "dvd.png")
+	im.setAttribute("height","100");
+	im.setAttribute("width","100");
 	im.setAttribute("x",x.toString());
 	im.setAttribute("y",y.toString());
 	if (x<=0 || x>=710){
 	    dx*=-1;
 	}
-	else if (y>=710 || y<=0){
+	else if (y>=730 || y<=0){
 	    dy*=-1;
 	}
 	x+=dx;
-	y+=dy
+	y+=dy;
+	esvg.appendChild(im);
 	rid = window.requestAnimationFrame(boing);
     }
     boing();
